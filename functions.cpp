@@ -4,6 +4,9 @@
 #include <numeric>
 #include <cstdlib>
 #include <ctime>
+#include <stack>
+#include <list>
+#include <iterator>
 
 using namespace std;
 
@@ -88,4 +91,60 @@ void printMatrix(const vector<vector<int>>& graph) {
         }
         cout << "\n";
     }
+}
+
+bool isEulerian(const vector<vector<int>>& graph) {
+    for (const auto& row : graph) {
+        int degree = accumulate(row.begin(), row.end(), 0);
+        if (degree % 2 != 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+vector<int> findEulerianCycle(vector<vector<int>>& graph) {
+    int n = graph.size();
+    vector<int> cycle;
+    if (!isEulerian(graph)) {
+        return cycle;
+    }
+
+    stack<int> currentPath;
+    list<int> circuit;
+
+    currentPath.push(0);
+    int currentVertex = 0;
+
+    while (!currentPath.empty()) {
+        if (accumulate(graph[currentVertex].begin(), graph[currentVertex].end(), 0) != 0) {
+            currentPath.push(currentVertex);
+            for (int nextVertex = 0; nextVertex < n; ++nextVertex) {
+                if (graph[currentVertex][nextVertex] != 0) {
+                    graph[currentVertex][nextVertex] = 0;
+                    graph[nextVertex][currentVertex] = 0;
+                    currentVertex = nextVertex;
+                    break;
+                }
+            }
+        } 
+        else {
+            circuit.push_front(currentVertex);
+            currentVertex = currentPath.top();
+            currentPath.pop();
+        }
+    }
+
+    for (int vertex : circuit) {
+        cycle.push_back(vertex + 1);
+    }
+    return cycle;
+}
+
+void printHelp(){
+    cout << "\nhelp: wyświetlenie tej informacji\n";
+    cout << "print: wypisanie grafu\n";
+    cout << "euler: znajdowanie cyklu Eulera w grafie\n";
+    cout << "hamilton: znajdowanie cyklu Hamiltona w grafie\n";
+    cout << "exit: opuszczenie programu\n\n";
 }

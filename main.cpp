@@ -1,28 +1,23 @@
-#include <unordered_set>
 #include <iostream>
 #include <vector>
 #include <cstdlib>
 #include <ctime>
-#include <sstream>
-#include <stack>
-#include <algorithm>
-#include <queue>
 #include "functions.cpp"
 
 using namespace std;
 int main(int argc, char* argv[]){
+    if (argc != 2) {
+        cerr << "Użycie: " << argv[0] << " --hamilton (-h) albo " << argv[0] << " --non-hamilton (-nh)\n";
+        return 1;
+    }
+
     int nodes;
     double saturation;
     vector<vector<int>> graph;
     string mode = argv[1];
     string action;
 
-    if (argc != 2) {
-        cerr << "Użycie: " << argv[0] << " <tryb>\n";
-        return 1;
-    }
-
-    if (mode == "--hamilton") {
+    if (mode == "--hamilton" || mode == "-h") {
         cout << "Podaj liczbę wierzchołków: ";
         if (!(cin >> nodes) || nodes <= 0) {
             cerr << "Błędna liczba wierzchołków.\n";
@@ -37,8 +32,7 @@ int main(int argc, char* argv[]){
 
         graph = createHamiltonianGraph(nodes, saturation);
     }
-
-    else if(mode == "--non-hamilton") {
+    else if(mode == "--non-hamilton" || mode == "-nh") {
         cout << "Podaj liczbę wierzchołków: ";
         if (!(cin >> nodes) || nodes <= 0){
             cerr << "Błędna liczba wierzchołków.\n";
@@ -47,14 +41,40 @@ int main(int argc, char* argv[]){
 
         graph = createNonHamiltonianGraph(nodes, 50);
     }
-   
-    if(mode == "--hamilton"){
+
+    else{
+        cerr << "Użycie: " << argv[0] << " --hamilton (-h) albo --non-hamilton (-nh)\n";
+        return 1;
+    }
+    
+    printHelp();
+
+    if(mode == "--hamilton" || mode == "-h"){
         while (true) {
             cout << "action> ";
             cin >> action;
             if (action == "print") {
                 printMatrix(graph);
             }
+
+            else if (action == "help"){
+                printHelp();
+            }
+
+            else if (action == "euler") {
+                vector<int> cycle = findEulerianCycle(graph);
+                if (cycle.empty()) {
+                    cout << "Graf nie posiada cyklu Eulera.\n";
+                } 
+                else {
+                    cout << "Cykl Eulera: ";
+                    for (int node : cycle) {
+                        cout << node << " ";
+                    }
+                    cout << "\n";
+                }
+            }
+
             else if (action == "exit"){
                 cout << "Opuszczanie programu...\n";
                 return 1;
@@ -62,19 +82,40 @@ int main(int argc, char* argv[]){
         }
     }        
 
-    else if(mode == "--non-hamilton"){
+    else if(mode == "--non-hamilton" || mode == "-nh"){
         while (true) {
             cout << "action> ";
             cin >> action;
             if (action == "print") {
                 printMatrix(graph);
             }
+
+            else if (action == "help"){
+                printHelp();
+            }
+            
+            else if (action == "euler") {
+                vector<int> cycle = findEulerianCycle(graph);
+                if (cycle.empty()) {
+                    cout << "Graf nie posiada cyklu Eulera.\n";
+                } 
+                else {
+                    cout << "Cykl Eulera: ";
+                    for (int node : cycle) {
+                        cout << node << " ";
+                    }
+                    cout << "\n";
+                }
+            }
+
             else if (action == "exit"){
                 cout << "Opuszczanie programu...\n";
                 return 1;
             }
         }
     }
+
+
 
     return 0;
 }
