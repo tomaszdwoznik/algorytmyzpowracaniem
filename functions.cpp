@@ -141,6 +141,48 @@ vector<int> findEulerianCycle(vector<vector<int>>& graph) {
     return cycle;
 }
 
+bool isSafe(int v, const vector<vector<int>>& graph, vector<int>& path, int pos) {
+    if (graph[path[pos - 1]][v] == 0) {
+        return false;
+    }
+    for (int i = 0; i < pos; i++) {
+        if (path[i] == v) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool hamiltonianCycleUtil(vector<vector<int>>& graph, vector<int>& path, int pos) {
+    int n = graph.size();
+    if (pos == n) {
+        if (graph[path[pos - 1]][path[0]] == 1) {
+            return true;
+        }
+        return false;
+    }
+    for (int v = 1; v < n; v++) {
+        if (isSafe(v, graph, path, pos)) {
+            path[pos] = v;
+            if (hamiltonianCycleUtil(graph, path, pos + 1)) {
+                return true;
+            }
+            path[pos] = -1;
+        }
+    }
+    return false;
+}
+
+vector<int> findHamiltonianCycle(vector<vector<int>>& graph) {
+    int n = graph.size();
+    vector<int> path(n, -1);
+    path[0] = 0;
+    if (!hamiltonianCycleUtil(graph, path, 1)) {
+        return vector<int>();
+    }
+    return path;
+}
+
 void printHelp(){
     cout << "\nhelp: wyświetlenie tej informacji\n";
     cout << "print: wypisanie grafu\n";
