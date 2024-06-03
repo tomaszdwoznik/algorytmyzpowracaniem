@@ -35,35 +35,46 @@ int main(int argc, char* argv[]){
             return 1;
         }
 
-        graph = createHamiltonianGraph(nodes, saturation);   
-
+        graph = createHamiltonianGraph(nodes, saturation);
     }
-    else if(mode == "--nonhamilton") {
+
+    else if(mode == "--non-hamilton") {
+        cout << "Podaj liczbę wierzchołków: ";
         if (!(cin >> nodes) || nodes <= 0){
             cerr << "Błędna liczba wierzchołków.\n";
             return 1;
         }
 
-        // graph = generate NON HAMILTON IN MATRIX
+        graph = createNonHamiltonianGraph(nodes, 50);
     }
-
    
     if(mode == "--hamilton"){
         while (true) {
-        cout << "action> ";
-        cin >> action;
-        if (action == "print") {
-            printMatrix(graph);
-        }
-        else if (action == "exit"){
-            cout << "Opuszczanie programu...\n";
-            return 1;
-        }
+            cout << "action> ";
+            cin >> action;
+            if (action == "print") {
+                printMatrix(graph);
+            }
+            else if (action == "exit"){
+                cout << "Opuszczanie programu...\n";
+                return 1;
+            }
         }
     }        
-    // else if(mode == "--non-hamilton"){
 
-    // }
+    else if(mode == "--non-hamilton"){
+        while (true) {
+            cout << "action> ";
+            cin >> action;
+            if (action == "print") {
+                printMatrix(graph);
+            }
+            else if (action == "exit"){
+                cout << "Opuszczanie programu...\n";
+                return 1;
+            }
+        }
+    }
 
     return 0;
 }
