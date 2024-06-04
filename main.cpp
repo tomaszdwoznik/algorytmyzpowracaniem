@@ -4,6 +4,7 @@
 #include <ctime>
 #include <algorithm>
 #include <cctype> 
+#include <chrono>
 #include "functions.cpp"
 
 using namespace std;
@@ -101,7 +102,7 @@ int main(int argc, char* argv[]){
 
         else if (action == "exit"){
             cout << "Opuszczanie programu...\n";
-            return 1;
+            return 0;
         }
 
         else {
