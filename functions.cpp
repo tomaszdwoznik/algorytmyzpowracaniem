@@ -84,6 +84,7 @@ vector<vector<int>> createNonHamiltonianGraph(int n, int saturation) {
 
 void printMatrix(const vector<vector<int>>& graph) {
     int nodes = graph.size();
+    cout << "Macierz sąsiedztwa:" << endl;
     for (int i = 0; i < nodes; ++i) {
         cout << i + 1 << "> ";
         for (int j = 0; j < nodes; ++j) {
@@ -92,6 +93,7 @@ void printMatrix(const vector<vector<int>>& graph) {
         cout << "\n";
     }
 }
+
 
 bool isEulerian(const vector<vector<int>>& graph) {
     for (const auto& row : graph) {
@@ -103,7 +105,7 @@ bool isEulerian(const vector<vector<int>>& graph) {
     return true;
 }
 
-vector<int> findEulerianCycle(vector<vector<int>>& graph) {
+vector<int> findEulerianCycle(vector<vector<int>> graph) {
     int n = graph.size();
     vector<int> cycle;
     if (!isEulerian(graph)) {
@@ -181,6 +183,13 @@ vector<int> findHamiltonianCycle(vector<vector<int>>& graph) {
         return vector<int>();
     }
     return path;
+}
+
+void printDegrees(const vector<vector<int>>& graph) {
+    for (int i = 0; i < graph.size(); ++i) {
+        int degree = accumulate(graph[i].begin(), graph[i].end(), 0);
+        cout << "Wierzchołek " << i + 1 << " ma stopień " << degree << "\n";
+    }
 }
 
 void printHelp(){

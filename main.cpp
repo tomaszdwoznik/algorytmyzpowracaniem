@@ -61,52 +61,52 @@ int main(int argc, char* argv[]){
     printHelp();
 
     while (true) {
-        cout << "action> ";
+        cout << "\naction> ";
         cin >> action;
-        transform(action.begin(), action.end(), action.begin(), [](unsigned char c){ return tolower(c); });
+
         if (action == "print") {
             printMatrix(graph);
-        }
 
-        else if (action == "help"){
-            printHelp();
-        }
-
+        } 
+        
         else if (action == "euler") {
-            vector<int> cycle = findEulerianCycle(graph);
-            if (cycle.empty()) {
-                cout << "Graf nie posiada cyklu Eulera.\n";
-            } 
-            else {
+            vector<int> eulerianCycle = findEulerianCycle(graph);
+            if (!eulerianCycle.empty()) {
                 cout << "Cykl Eulera: ";
-                for (int node : cycle) {
-                    cout << node << " ";
+                for (int v : eulerianCycle) {
+                    cout << v << " ";
                 }
                 cout << "\n";
+            } 
+            else {
+                cout << "Nie znaleziono cyklu Eulera.\n";
             }
-        }
-
+        } 
+        
         else if (action == "hamilton") {
-                vector<int> cycle = findHamiltonianCycle(graph);
-                if (cycle.empty()) {
-                    cout << "Graf nie posiada cyklu Hamiltona.\n";
-                } 
-                else {
-                    cout << "Cykl Hamiltona: ";
-                    for (int node : cycle) {
-                        cout << node + 1 << " ";
-                    }
-                    cout << "\n";
+            vector<int> hamiltonianCycle = findHamiltonianCycle(graph);
+            if (!hamiltonianCycle.empty()) {
+                cout << "Cykl Hamiltona: ";
+                for (int v : hamiltonianCycle) {
+                    cout << v + 1 << " ";
                 }
+                cout << "\n";
+            } 
+            else {
+                cout << "Nie znaleziono cyklu Hamiltona.\n";
             }
-
-        else if (action == "exit"){
-            cout << "Opuszczanie programu...\n";
-            return 0;
-        }
-
+        } 
+        
+        else if (action == "help") {
+            printHelp();
+        } 
+        
+        else if (action == "exit") {
+            break;
+        } 
+        
         else {
-            cout << "Nieprawidłowa akcja: `" << action << "`. Użyj `help` do wyświetlenia wszystkich poprawnych akcji.\n";
+            cout << "Nieznana komenda. Wpisz 'help' aby uzyskać pomoc.\n";
         }
     }
 
