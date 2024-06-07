@@ -4,8 +4,11 @@
 #include <numeric>
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
+#include <string>
 #include <stack>
 #include <list>
+#include <fstream>
 #include <iterator>
 
 using namespace std;
@@ -198,4 +201,35 @@ void printHelp(){
     cout << "euler: znajdowanie cyklu Eulera w grafie\n";
     cout << "hamilton: znajdowanie cyklu Hamiltona w grafie\n";
     cout << "exit: opuszczenie programu\n\n";
+}
+
+void tikz(const vector<vector<int>>& matrix) {
+    string tikz_output = "\\documentclass{standalone}\n";
+    tikz_output += "\\usepackage{tikz}\n";
+    tikz_output += "\\begin{document}\n";
+    tikz_output += "\\begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2cm,thick,main node/.style={circle,draw,font=\\sffamily\\Large\\bfseries}]\n";
+
+    int n = matrix.size();
+    for (int i = 0; i < n; ++i) {
+        double angle = 360.0 / n * i;
+        tikz_output += "\\node[main node] (" + to_string(i + 1) + ") at (" + to_string(angle) + ":2) {" + to_string(i + 1) + "};\n";
+    }
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (matrix[i][j] == 1) {
+                tikz_output += "\\path[->] (" + to_string(i + 1) + ") edge (" + to_string(j + 1) + ");\n";
+            }
+        }
+    }
+
+    tikz_output += "\\end{tikzpicture}\n";
+    tikz_output += "\\end{document}\n";
+
+    ofstream file("graph.tex");
+    if (file.is_open()) {
+        cout << "Wyeksportowano graf do pliku 'graph.tex'\n";
+        file << tikz_output;
+        file.close();
+    }
 }

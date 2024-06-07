@@ -66,7 +66,8 @@ int main(int argc, char* argv[]){
 
         if (action == "print") {
             printMatrix(graph);
-
+            cout << endl;
+            tikz(graph);
         } 
         
         else if (action == "euler") {
